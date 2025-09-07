@@ -1,4 +1,5 @@
 name: CI
+# Force CI re-run after adding package-lock.json
 
 on:
   push:
