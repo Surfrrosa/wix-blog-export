@@ -35,6 +35,9 @@ export interface WixBlogPost {
     displayed: boolean;
   };
   seoData?: any;
+  // Extended fields for local processing
+  localImagePaths?: string[];
+  coverImageLocalPath?: string;
 }
 
 export interface WixCredentials {
@@ -43,12 +46,22 @@ export interface WixCredentials {
   siteId: string;
 }
 
+export type ExportFormat = 'markdown' | 'json' | 'csv' | 'all';
+
 export interface ExportOptions {
-  format: 'markdown' | 'json' | 'csv' | 'all';
+  format: ExportFormat;
   includeContent: boolean;
-  includeImages: boolean;
+  includeImages: boolean;        // existing toggle to include image refs
+  downloadImages: boolean;       // NEW: actually fetch images
   outputDir: string;
   filename?: string;
+  customer?: string;
+  bundleTitle?: string;
+  bundleZip: boolean;
+  concurrency: number;
+  retry: number;
+  timeoutMs: number;
+  dryRun: boolean;
 }
 
 export interface WixApiResponse {
@@ -57,5 +70,38 @@ export interface WixApiResponse {
     count: number;
     offset: number;
     total: number;
+  };
+}
+
+export interface ImageDownloadResult {
+  postId: string;
+  originalUrl: string;
+  localPath?: string;
+  success: boolean;
+  error?: string;
+}
+
+export interface SummaryReport {
+  generatedAt: string;
+  customer: string;
+  counts: {
+    total: number;
+    published: number;
+    draft: number;
+    scheduled: number;
+  };
+  images: {
+    attempted: number;
+    downloaded: number;
+    failed: number;
+  };
+  tagsTop10: Array<{ tag: string; count: number }>;
+  byYear: Array<{ year: number; count: number }>;
+  failures: {
+    imageDownloads: Array<{
+      postId: string;
+      url: string;
+      error: string;
+    }>;
   };
 }

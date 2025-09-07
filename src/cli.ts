@@ -67,8 +67,14 @@ class WixBlogExportCLI {
       format: 'all', // Export to all supported formats
       includeContent: true, // Include full post content
       includeImages: true, // Include cover images
+      downloadImages: false, // Don't download images by default
       outputDir: process.cwd(), // Export to current directory
-      filename: 'wix-blog-export' // Base filename (timestamp will be added)
+      filename: 'wix-blog-export', // Base filename (timestamp will be added)
+      bundleZip: false, // Don't create ZIP by default
+      concurrency: 4, // Default concurrency for image downloads
+      retry: 3, // Default retry count for failed downloads
+      timeoutMs: 20000, // Default timeout for image downloads
+      dryRun: false // Actually perform the export
     };
   }
 
